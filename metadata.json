@@ -1,0 +1,6 @@
+{
+  "name": "TARRAKO FREIGHT - Plataforma Logística i Comerç Exterior",
+  "description": "Plataforma corporativa d'e-commerce, nòlits marítims de vehicles Ro-Ro i PCTC al Port de Tarragona, inspecció PDI i seguiment de càrrega per a TARRAKO FREIGHT.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
