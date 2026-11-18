@@ -20,6 +20,7 @@ export const Header: React.FC<HeaderProps> = ({ activeSection, onNavigate }) => 
     { id: 'qui-som', label: t.nav.quiSom },
     { id: 'blog', label: t.nav.blog },
     { id: 'glossari', label: t.nav.glossari },
+    { id: 'seguiment', label: t.nav.seguiment, href: '/tracking' },
     { id: 'contacte', label: t.nav.contacte },
   ];
 
@@ -38,7 +39,7 @@ export const Header: React.FC<HeaderProps> = ({ activeSection, onNavigate }) => 
       {/* Top subtle cyber tech line */}
       <div className="h-[2px] w-full bg-gradient-to-r from-red-600 via-blue-500/80 to-red-600" />
 
-      <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 h-16 sm:h-20 flex items-center justify-between gap-2 sm:gap-4">
+      <div className="max-w-[1400px] mx-auto px-3 sm:px-6 lg:px-8 h-16 sm:h-20 flex items-center justify-between gap-3 sm:gap-4">
         {/* Brand with Logo */}
         <a
           href="#inici"
@@ -46,7 +47,7 @@ export const Header: React.FC<HeaderProps> = ({ activeSection, onNavigate }) => 
             e.preventDefault();
             handleNavClick('inici');
           }}
-          className="flex items-center gap-2 sm:gap-2.5 group shrink min-w-0"
+          className="flex items-center gap-2 sm:gap-2.5 group shrink-0"
           aria-label="TARRAKO FREIGHT - Port de Tarragona"
         >
           <img
@@ -55,7 +56,7 @@ export const Header: React.FC<HeaderProps> = ({ activeSection, onNavigate }) => 
             className="h-6 sm:h-7 w-auto object-contain shrink-0 group-hover:opacity-90 transition-opacity"
           />
 
-          <div className="flex flex-col min-w-0">
+          <div className="flex flex-col shrink-0">
             <span className="font-extrabold text-xs sm:text-sm tracking-wide text-white whitespace-nowrap leading-tight">
               TARRAKO{' '}
               <span className="text-red-500 font-semibold">
@@ -63,7 +64,7 @@ export const Header: React.FC<HeaderProps> = ({ activeSection, onNavigate }) => 
               </span>
             </span>
             {/* Subtle sublabel visible from md: */}
-            <span className="hidden md:block text-[9px] text-slate-400 font-mono tracking-wider truncate leading-tight mt-0.5">
+            <span className="hidden md:block text-[9px] text-slate-400 font-mono tracking-wider whitespace-nowrap leading-tight mt-0.5">
               {t.nav.sublabelPort}
             </span>
           </div>
@@ -71,20 +72,41 @@ export const Header: React.FC<HeaderProps> = ({ activeSection, onNavigate }) => 
 
         {/* Desktop Navigation Bar */}
         <nav
-          className="hidden lg:flex items-center gap-1 xl:gap-2 text-xs font-semibold tracking-wide"
+          className="hidden xl:flex items-center gap-0.5 2xl:gap-1.5 text-xs font-semibold tracking-wide min-w-0"
           aria-label="Navegació principal"
         >
           {navItems.map((item) => {
             const isActive = activeSection === item.id;
+            const classes = `px-2 2xl:px-3 py-2 rounded-lg transition-all cursor-pointer whitespace-nowrap relative group ${
+              isActive
+                ? 'text-white bg-red-950/60 border border-red-500/60 shadow-sm shadow-red-950/40 font-bold'
+                : 'text-slate-300 hover:text-white hover:bg-slate-900/80'
+            }`;
+
+            if ('href' in item && item.href) {
+              return (
+                <a
+                  key={item.id}
+                  href={item.href}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    handleNavClick(item.id);
+                  }}
+                  className={classes}
+                >
+                  <span>{item.label}</span>
+                  {isActive && (
+                    <span className="absolute bottom-0 left-1/2 -translate-x-1/2 w-4 h-[2px] bg-red-500 rounded-full" />
+                  )}
+                </a>
+              );
+            }
+
             return (
               <button
                 key={item.id}
                 onClick={() => handleNavClick(item.id)}
-                className={`px-3 py-2 rounded-lg transition-all cursor-pointer whitespace-nowrap relative group ${
-                  isActive
-                    ? 'text-white bg-red-950/60 border border-red-500/60 shadow-sm shadow-red-950/40 font-bold'
-                    : 'text-slate-300 hover:text-white hover:bg-slate-900/80'
-                }`}
+                className={classes}
               >
                 <span>{item.label}</span>
                 {isActive && (
@@ -96,24 +118,24 @@ export const Header: React.FC<HeaderProps> = ({ activeSection, onNavigate }) => 
         </nav>
 
         {/* Action: Language Selector + Demana Pressupost + Mobile Toggle */}
-        <div className="flex items-center gap-1.5 sm:gap-3 shrink-0">
+        <div className="flex items-center gap-1.5 sm:gap-2.5 shrink-0">
           <LanguageSelector />
 
           {/* Demana pressupost CTA Button (hidden on mobile, visible from sm) */}
           <button
             type="button"
             onClick={handleQuoteClick}
-            className="hidden sm:inline-flex items-center gap-1.5 px-3.5 py-2 text-xs font-bold text-white bg-red-600 hover:bg-red-500 active:bg-red-700 rounded-lg shadow-lg shadow-red-950/50 transition-all cursor-pointer border border-red-400/50"
+            className="hidden sm:inline-flex items-center gap-1.5 px-3.5 py-2 text-xs font-bold text-white bg-red-600 hover:bg-red-500 active:bg-red-700 rounded-lg shadow-lg shadow-red-950/50 transition-all cursor-pointer border border-red-400/50 whitespace-nowrap"
           >
             <span>{t.nav.demanaPressupost}</span>
             <ArrowRight className="w-3.5 h-3.5" />
           </button>
 
-          {/* Mobile Menu Toggle Button */}
+          {/* Mobile/Tablet Menu Toggle Button */}
           <button
             type="button"
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className="lg:hidden p-2 text-slate-300 hover:text-white bg-slate-900 border border-slate-800 rounded-lg cursor-pointer shrink-0"
+            className="xl:hidden p-2 text-slate-300 hover:text-white bg-slate-900 border border-slate-800 rounded-lg cursor-pointer shrink-0"
             aria-label={mobileMenuOpen ? t.nav.closeMenu : t.nav.openMenu}
           >
             {mobileMenuOpen ? <X className="w-5 h-5 text-red-400" /> : <Menu className="w-5 h-5" />}
@@ -121,30 +143,53 @@ export const Header: React.FC<HeaderProps> = ({ activeSection, onNavigate }) => 
         </div>
       </div>
 
-      {/* Mobile Drawer Menu */}
+      {/* Mobile/Tablet Drawer Menu */}
       {mobileMenuOpen && (
-        <div className="lg:hidden px-4 pt-3 pb-6 bg-[#070b14] border-b border-slate-800/90 shadow-2xl space-y-3">
+        <div className="xl:hidden px-4 pt-3 pb-6 bg-[#070b14] border-b border-slate-800/90 shadow-2xl space-y-3">
           <div className="mb-2">
             <LanguageSelector isMobile={true} />
           </div>
 
           <div className="space-y-1">
-            {navItems.map((item) => (
-              <button
-                key={item.id}
-                onClick={() => handleNavClick(item.id)}
-                className={`w-full text-left px-3.5 py-2.5 rounded-lg text-xs font-semibold flex items-center justify-between transition-colors cursor-pointer ${
-                  activeSection === item.id
-                    ? 'text-white bg-red-950/60 border border-red-500/50'
-                    : 'text-slate-300 hover:text-white hover:bg-slate-900'
-                }`}
-              >
-                <span>{item.label}</span>
-                {activeSection === item.id && (
-                  <span className="w-1.5 h-1.5 rounded-full bg-red-500" />
-                )}
-              </button>
-            ))}
+            {navItems.map((item) => {
+              const mobileClasses = `w-full text-left px-3.5 py-2.5 rounded-lg text-xs font-semibold flex items-center justify-between transition-colors cursor-pointer ${
+                activeSection === item.id
+                  ? 'text-white bg-red-950/60 border border-red-500/50'
+                  : 'text-slate-300 hover:text-white hover:bg-slate-900'
+              }`;
+
+              if ('href' in item && item.href) {
+                return (
+                  <a
+                    key={item.id}
+                    href={item.href}
+                    onClick={(e) => {
+                      e.preventDefault();
+                      handleNavClick(item.id);
+                    }}
+                    className={mobileClasses}
+                  >
+                    <span>{item.label}</span>
+                    {activeSection === item.id && (
+                      <span className="w-1.5 h-1.5 rounded-full bg-red-500" />
+                    )}
+                  </a>
+                );
+              }
+
+              return (
+                <button
+                  key={item.id}
+                  onClick={() => handleNavClick(item.id)}
+                  className={mobileClasses}
+                >
+                  <span>{item.label}</span>
+                  {activeSection === item.id && (
+                    <span className="w-1.5 h-1.5 rounded-full bg-red-500" />
+                  )}
+                </button>
+              );
+            })}
           </div>
 
           {/* Mobile Quote CTA */}

@@ -9,7 +9,11 @@ interface ChatMessage {
   hasAction?: boolean;
 }
 
-export const FaqAssistant: React.FC = () => {
+interface FaqAssistantProps {
+  onGoToContact?: () => void;
+}
+
+export const FaqAssistant: React.FC<FaqAssistantProps> = ({ onGoToContact }) => {
   const { t } = useLanguage();
   const [isOpen, setIsOpen] = useState(false);
   const [messages, setMessages] = useState<ChatMessage[]>([]);
@@ -55,6 +59,10 @@ export const FaqAssistant: React.FC = () => {
 
   const handleGoToContact = () => {
     setIsOpen(false);
+    if (onGoToContact) {
+      onGoToContact();
+      return;
+    }
     const element = document.getElementById('contacte');
     if (element) {
       element.scrollIntoView({ behavior: 'smooth' });
